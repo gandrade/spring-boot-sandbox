@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  config-server:
+    build: 
+      context: ./config-server-service
+    expose:
+      - "8888" 
+
+  discovery-server-service:
+    build: 
+      context: ./discovery-server-service
+    depends_on: 
+      - config-server
+    links: 
+      - config-server
+    expose: 
+      - "8761"
+
+  admin-server-service:
+    build: 
+      context: ./admin-server-service
+    depends_on: 
+      - proxy-service
+    links: 
+      - config-server
+      - discovery-server-service
+    expose: 
+      - "8090"
+
+  proxy-service:
+    build: 
+      context: ./proxy-service
+    depends_on: 
+      - discovery-server-service
+    links: 
+      - config-server
+      - discovery-server-service      
+    expose:
+      - "9090"
+
+  greeting-service:
+    build: 
+      context: ./greeting-service
+    depends_on:       
+      - proxy-service
+    links: 
+      - config-server
+      - discovery-server-service
+    deploy:
+      replicas: 5
