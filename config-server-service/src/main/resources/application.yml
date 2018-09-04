@@ -1,0 +1,18 @@
+server:
+    port: 8888
+
+spring:
+  application:
+    name: config-server-service
+  cloud:
+    config:
+      server:
+        git:
+          #uri: c:/personal/github/config-repo
+          uri: https://github.com/gandrade/config-repo
+          timeout: 4
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/
