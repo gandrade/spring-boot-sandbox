@@ -14,12 +14,10 @@ public class GreetingController {
     @Autowired
     GreetingRepository repository;
 
-    @GetMapping
-    public String hi() {
+    @GetMapping("/")
+    public Greeting hi() {
         String s = "Hello World: " + UUID.randomUUID();
-
         Greeting greeting = Greeting.newBuilder().withName(s).build();
-        Greeting save = repository.save(greeting);
-        return s;
+        return repository.save(greeting);
     }
 }
