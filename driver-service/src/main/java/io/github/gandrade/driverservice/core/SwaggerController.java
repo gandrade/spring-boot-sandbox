@@ -1,4 +1,4 @@
-package io.github.gandrade.driverservice;
+package io.github.gandrade.driverservice.core;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +8,6 @@ public class SwaggerController {
 
     @GetMapping("/")
     public String swagger() {
-        return "swagger-ui.html";
+        return "redirect:swagger-ui.html";
     }
 }

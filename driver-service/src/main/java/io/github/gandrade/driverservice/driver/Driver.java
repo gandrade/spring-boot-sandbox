@@ -1,4 +1,4 @@
-package io.github.gandrade.driverservice.model;
+package io.github.gandrade.driverservice.driver;
 
 
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-class Driver {
+public class Driver {
 
     @Id
     @GeneratedValue

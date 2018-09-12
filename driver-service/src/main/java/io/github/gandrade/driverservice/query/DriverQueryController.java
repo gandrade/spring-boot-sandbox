@@ -1,7 +1,8 @@
 package io.github.gandrade.driverservice.query;
 
-import io.github.gandrade.driverservice.model.DriverDTO;
+import io.github.gandrade.driverservice.driver.DriverDTO;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,8 @@ public class DriverQueryController {
         return null;
     }
 
-    public DriverDTO findDriver(DriverDTO driverDTO){
+    @GetMapping("/{id}")
+    public DriverDTO findDriver(@PathVariable String id){
         return null;
     }
 }

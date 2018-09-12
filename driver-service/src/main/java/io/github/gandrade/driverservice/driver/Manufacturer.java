@@ -1,4 +1,4 @@
-package io.github.gandrade.driverservice.model;
+package io.github.gandrade.driverservice.driver;
 
 import lombok.AccessLevel;
 import lombok.Getter;

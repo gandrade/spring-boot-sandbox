@@ -16,12 +16,4 @@ public class DriverServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DriverServiceApplication.class, args);
 	}
-
-	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.paths(PathSelectors.ant("/api/**"))
-				.build();
-	}
 }
