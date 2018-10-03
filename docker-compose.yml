@@ -1,51 +1,117 @@
-version: '3'
+version: '3.4'
 
 services:
-  config-server:
-    build: 
-      context: ./config-server-service
-    expose:
-      - "8888" 
 
-  discovery-server-service:
+  discovery-server-service:    
+    container_name: eureka-service
     build: 
-      context: ./discovery-server-service
-    depends_on: 
-      - config-server
-    links: 
-      - config-server
+      context: discovery-server-service    
     expose: 
       - "8761"
+    ports: 
+      - "8761:8761"  
+    # environment:       
+    #   - "EUREKA_HOST=192.168.99.100"     
+    networks: 
+      - spring-network
+      
 
-  admin-server-service:
+  config-server-service:    
     build: 
-      context: ./admin-server-service
-    depends_on: 
-      - proxy-service
-    links: 
-      - config-server
-      - discovery-server-service
-    expose: 
-      - "8090"
-
-  proxy-service:
-    build: 
-      context: ./proxy-service
-    depends_on: 
-      - discovery-server-service
-    links: 
-      - config-server
-      - discovery-server-service      
+      context: config-server-service
     expose:
-      - "9090"
+      - "8888" 
+    ports: 
+      - "8888:8888"
+    # extra_hosts: 
+    #   - "eureka-service:192.168.99.100"        
+    # environment:
+    #   - "EUREKA_HOST=192.168.99.100"
+    networks: 
+      - spring-network
+    links:
+      - discovery-server-service      
 
-  greeting-service:
-    build: 
-      context: ./greeting-service
-    depends_on:       
-      - proxy-service
-    links: 
-      - config-server
-      - discovery-server-service
-    deploy:
-      replicas: 5
+
+  rabbit-mq:
+    container_name: rabbit-mq
+    image: rabbitmq:3
+    expose:
+      - 5672
+    logging:
+      driver: json-file
+      
+networks:
+    spring-network:
+        driver: bridge
+
+  # driver-service:
+  #   container_name: driver-service
+  #   build:
+  #     context: ./driver-service
+  #   environment: 
+  #     - SPRING_APPLICATION_JSON: '{
+  #       "spring": {
+  #         "cloud": {
+  #           "config": {
+  #             "uri": "http://config-server:8888"
+  #           }
+  #         }
+  #         "rabbitmq": {
+  #           "host":"rabbit-mq"
+  #         }
+  #       },
+  #       "eureka":{
+  #         "client": {
+  #           "serviceUrl": {
+  #             "defaultZone": "http://discovery-server-service:8761/eureka"
+  #           }
+  #         }
+  #       }
+  #     }'
+  #   depends_on: 
+  #     - config-server
+  #     - discovery-server-service
+  #     - rabbit-mq
+  #   links: 
+  #     - config-server
+  #     - discovery-server-service
+  #   expose:
+  #     - "8080"
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - spring-sandbox-network      
+    
+  # admin-server-service:
+  #   build: 
+  #     context: ./admin-server-service
+  #   depends_on: 
+  #     - proxy-service
+  #   links: 
+  #     - config-server
+  #     - discovery-server-service
+  #   expose: 
+  #     - "8090"
+
+  # proxy-service:
+  #   build: 
+  #     context: ./proxy-service
+  #   depends_on: 
+  #     - discovery-server-service
+  #   links: 
+  #     - config-server
+  #     - discovery-server-service      
+  #   expose:
+  #     - "9090"
+
+  # greeting-service:
+  #   build: 
+  #     context: ./greeting-service
+  #   depends_on:       
+  #     - proxy-service
+  #   links: 
+  #     - config-server
+  #     - discovery-server-service
+  #   deploy:
+  #     replicas: 5
