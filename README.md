@@ -1,4 +1,4 @@
-# Spring Boot & Cloud sandbox
+# :leaves: Spring Boot & Cloud sandbox
 
 
 ## Stack
